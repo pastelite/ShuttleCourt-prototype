@@ -1,0 +1,23 @@
+.form-container {
+  border: 1px solid white;
+  border-radius: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap:.5em;
+  max-width: 500px;
+  margin: auto;
+  padding: 2em;
+
+  label {
+    margin-top: 1em;
+  }
+
+  button {
+    margin-top: .5em;
+  }
+}
+
+h1 {
+  text-align: center;
+}
