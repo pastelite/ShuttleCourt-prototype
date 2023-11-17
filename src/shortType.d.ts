@@ -1,0 +1,1 @@
+type StringNumberDict = { [key: string]: number }

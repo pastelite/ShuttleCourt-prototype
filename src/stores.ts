@@ -38,4 +38,33 @@ export const equipmentsStore = create<EquipmentsStoreProps>((set) => ({
   }
 }));
 
-mountStoreDevtool('Filter',filterStore)
+type BookingInfo = {
+  courtId: number;
+  bookingId?: number;
+  date: string;
+  time: number;
+  equipments: StringNumberDict;
+  price?: number;
+};
+
+type BookingStoreProps = {
+  bookingInfo: BookingInfo[];
+  latestBookingId: number;
+  addBookingInfo: (bookingInfo: BookingInfo) => void;
+  removeBookingInfo: (bookingId: number) => void;
+};
+
+export const bookingStore = create<BookingStoreProps>((set) => ({
+  bookingInfo: [],
+  latestBookingId: 1,
+  addBookingInfo: (bookingInfo: BookingInfo) => set((state) => {
+    const bookingId = state.latestBookingId + 1;
+    return {
+      bookingInfo: [...state.bookingInfo, { ...bookingInfo, bookingId }],
+      latestBookingId: bookingId
+    }
+  }),
+  removeBookingInfo: (bookingId: number) => set((state) =>
+    ({ bookingInfo: state.bookingInfo.filter((info) => info.bookingId !== bookingId) })
+  ),
+}));
