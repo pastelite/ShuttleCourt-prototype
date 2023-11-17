@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { courtLists } from "../stores"
 import "./CourtInfo.scss"
 import { useMemo } from "react"
@@ -14,6 +14,7 @@ export default function CourtInfo() {
     return courtLists.find((court) => court.id === courtId)
   }, [courtId])
 
+  let navigate = useNavigate();
 
   return (
     <div id="court-page">
@@ -35,9 +36,11 @@ export default function CourtInfo() {
           <JamCoin fill='white' height='1em' />
           {courtInfo?.bookingCost}฿
         </p>
+        <Link to={`/court/${courtId}/book`}>
         <button className="book-button">
           Book Now
         </button>
+        </Link>
       </section>
 
     </div>
