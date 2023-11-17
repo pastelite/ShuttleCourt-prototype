@@ -1,5 +1,6 @@
 import './NavBar.scss'
 import JamUserCirce from '../assets/icons/jam-user-circle.svg?react'
+import JamUnorderedList from '../assets/icons/jam-unordered-list.svg?react'
 import SVGRepoBadmintonShuttlecock from '../assets/icons/svgrepo-badminton-shuttlecock.svg?react'
 import { userStore, filterStore } from '../stores'
 import { Link, useLocation } from 'react-router-dom'
@@ -30,6 +31,9 @@ export default function NavBar() {
         <div className='user-menu'>
           <JamUserCirce fill='white' />
           {username}
+          <Link to='/bookings'>
+            <JamUnorderedList fill='white' />
+          </Link>
         </div>
       </>
     }

@@ -10,6 +10,7 @@ import Booking from './pages/Booking.tsx'
 
 import dayjs from "dayjs"
 import CustomParseFormat from "dayjs/plugin/customParseFormat"
+import BookingsList from './pages/BookingsList.tsx'
 dayjs.extend(CustomParseFormat)
 
 
@@ -18,8 +19,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
     <NavBar/>
       <Routes>
-        <Route path="/home" element={<Home/>}/>
         <Route path="/" element={<Login/>}/>
+        <Route path="/home" element={<Home/>}/>
+        <Route path="/bookings" element={<BookingsList/>}/>
         <Route path="/court/:id" element={<CourtInfo/>}/>
         <Route path="/court/:id/book" element={<Booking/>}/>
       </Routes>

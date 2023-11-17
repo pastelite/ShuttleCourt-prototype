@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { mountStoreDevtool } from "simple-zustand-devtools";
+import dayjs from "dayjs";
 
 type UserInfo = {
   username: string;
@@ -38,13 +39,13 @@ export const equipmentsStore = create<EquipmentsStoreProps>((set) => ({
   }
 }));
 
-type BookingInfo = {
+export type BookingInfo = {
   courtId: number;
   bookingId?: number;
-  date: string;
+  date: dayjs.Dayjs;
   time: number;
   equipments: StringNumberDict;
-  price?: number;
+  price: number;
 };
 
 type BookingStoreProps = {

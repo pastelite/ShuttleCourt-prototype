@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import courtsList from "../courtsList"
 
@@ -8,41 +8,41 @@ import { BookingTime } from "../components/BookingTime"
 import "./Booking.scss"
 import JamCoin from "../assets/icons/jam-coin.svg?react"
 import ProcessOrderPopup from "../components/ProcessOrderPopup"
-import dayjs from "dayjs"
+import useBookingStore from "./BookingStore"
 
 export default function Booking() {
-  // Get court info from url
+
+  let { totalTime, formEquipments, setShowPopup, courtInfo, setCourtInfo, setPrice, showPopup } = useBookingStore()
+
   let courtId = Number.parseInt(useParams().id ?? '0')
-  let courtInfo = useMemo(() => {
-    return courtsList.find((court) => court.id === courtId)
+
+  useEffect(() => {
+    let courtInfo = courtsList.find((court) => court.id === courtId)
+    setCourtInfo(courtInfo)
   }, [])
 
-  // Setup shared state
-  let [totalTime, setTotalTime] = useState(0)
-  let [datetime, setDatetime] = useState(dayjs())
-  let [formEquipments, setFormEquipments] = useState<StringNumberDict>({
-    badmintonRack: 0,
-    shuttlecock: 0,
-  })
-  let [showPopup, setShowPopup] = useState(false);
- 
   // calculate price
-  let bookingPrice = (courtInfo?.bookingCost || 0) 
+  let bookingPrice = (courtInfo?.bookingCost || 0)
   let equipmentPrice = formEquipments.badmintonRack * 5 + formEquipments.shuttlecock * 1
   let hourlyPrice = bookingPrice + equipmentPrice
   let price = hourlyPrice / 60 * totalTime
 
+  function handleShowPopup() {
+    setShowPopup(true)
+    setPrice(price)
+  }
+
   return <div id="booking-page">
-    <ProcessOrderPopup show={showPopup} setShow={setShowPopup}/>
+    <ProcessOrderPopup />
     <h1>Booking</h1>
-    <BookingTime courtInfo={courtInfo} setTotalTime={setTotalTime} />
-    <BookingEquipments formEquipment={formEquipments} setFormEquipment={setFormEquipments}/>
+    <BookingTime />
+    <BookingEquipments />
     <p>
       <JamCoin fill='white' height='1em' />
       Final Price: {price.toFixed(2)}฿ ({hourlyPrice}฿/hr)
     </p>
     <div className="button-container">
-      <button className="book-button" onClick={()=>setShowPopup(true)}>Confirm</button>
+      <button className="book-button" onClick={handleShowPopup}>Confirm</button>
     </div>
   </div>
 }

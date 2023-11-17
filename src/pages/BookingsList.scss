@@ -1,0 +1,25 @@
+@import '../global_vars.scss';
+
+.booking-item-container {
+  border: 1px solid white;
+  margin: .5em;
+  border-radius: 1em;
+  padding: 1em;
+  position: relative;
+
+  .cancel-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1em;
+    cursor: pointer;
+    margin: 1em;
+    height: 4em;
+    color: black;
+    border: none;
+    box-sizing: border-box;
+    border-radius: 1em;
+
+    background-color: $accent;
+  }
+}

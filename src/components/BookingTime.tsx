@@ -2,13 +2,16 @@ import { useEffect, useMemo, useState } from "react";
 import { CourtInfo } from "../courtsList";
 import dayjs from "dayjs";
 import JamClock from "../assets/icons/jam-clock.svg?react";
+import useBookingStore from "../pages/BookingStore";
 
 // By far the most complicated component in this project
-interface BookingTimeProps {
-  courtInfo?: CourtInfo;
-  setTotalTime: React.Dispatch<React.SetStateAction<number>>;
-}
-export function BookingTime({ courtInfo, setTotalTime }: BookingTimeProps) {
+// interface BookingTimeProps {
+//   courtInfo?: CourtInfo;
+//   setTotalTime: React.Dispatch<React.SetStateAction<number>>;
+// }
+export function BookingTime() {
+  let { courtInfo, setTotalTime, datetime, setDatetime } = useBookingStore();
+
   let [errorText, setErrorText] = useState('');
 
   let [formTime, setFormTime] = useState<{ [key: string]: string; }>({
@@ -48,12 +51,18 @@ export function BookingTime({ courtInfo, setTotalTime }: BookingTimeProps) {
     checkTimeValue(formTime.startTime, formTime.endTime);
   }, []);
 
+  function handleDateChange(e: React.ChangeEvent<HTMLInputElement>) {
+    let { value } = e.target;
+    setDatetime(dayjs(value, 'YYYY-MM-DD'));
+  }
+
   // only set total time when the form changes to prevent infinite loop
   let totalTime = useMemo(() => {
     let startTime = dayjs(formTime.startTime, 'HH:mm');
     let endTime = dayjs(formTime.endTime, 'HH:mm');
     let total = endTime.diff(startTime, 'minute');
     setTotalTime(total);
+    setDatetime(dayjs(datetime).set('hour', startTime.hour()).set('minute', startTime.minute()));
     return total;
   }, [formTime]);
 
@@ -72,7 +81,7 @@ export function BookingTime({ courtInfo, setTotalTime }: BookingTimeProps) {
       defaultValue={formTime.endTime}
     />
 
-    <input type="date" defaultValue={dayjs().format('YYYY-MM-DD') }></input>
+    <input type="date" defaultValue={dayjs().format('YYYY-MM-DD') } onChange={handleDateChange}></input>
 
     <p>
       {Math.floor(totalTime / 60)} hours {totalTime % 60} minutes <span style={{ color: 'red' }}>{errorText}</span>

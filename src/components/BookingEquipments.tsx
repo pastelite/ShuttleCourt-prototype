@@ -1,16 +1,19 @@
+import useBookingStore from "../pages/BookingStore";
 import { equipmentsStore } from "../stores";
 
-interface BookingEquipmentsProps {
-  formEquipment: StringNumberDict;
-  setFormEquipment: React.Dispatch<React.SetStateAction<StringNumberDict>>;
-}
-export function BookingEquipments({ formEquipment, setFormEquipment }: BookingEquipmentsProps) {
+// interface BookingEquipmentsProps {
+//   formEquipment: StringNumberDict;
+//   setFormEquipment: React.Dispatch<React.SetStateAction<StringNumberDict>>;
+// }
+export function BookingEquipments() {
+  let { formEquipments, setFormEquipments } = useBookingStore();
+
   let dbEquipments = equipmentsStore();
 
   function handleEquipmentChange(e: React.ChangeEvent<HTMLInputElement>) {
     let { name, value: valueString } = e.target;
     let value = Number.parseInt(valueString);
-    setFormEquipment((prev) => ({ ...prev, [name]: value }));
+    setFormEquipments({ ...formEquipments, [name]: value });
 
     // @ts-ignore
     let dbEquipmentsNumber: number = dbEquipments[name];
@@ -31,7 +34,7 @@ export function BookingEquipments({ formEquipment, setFormEquipment }: BookingEq
       <div>
         <h4>Badminton Rack</h4>
         <p>
-          Available: {dbEquipments.badmintonRack - formEquipment.badmintonRack}<br />
+          Available: {dbEquipments.badmintonRack - formEquipments.badmintonRack}<br />
           Price: 5฿/hr
         </p>
         <input type="number" defaultValue={0} name="badmintonRack" onChange={handleEquipmentChange}></input>
@@ -39,7 +42,7 @@ export function BookingEquipments({ formEquipment, setFormEquipment }: BookingEq
       <div>
         <div>Shuttlecock</div>
         <p>
-          Available: {dbEquipments.shuttlecock - formEquipment.shuttlecock}<br />
+          Available: {dbEquipments.shuttlecock - formEquipments.shuttlecock}<br />
           Price: 1฿/hr
         </p>
         <input type="number" defaultValue={0} name="shuttlecock" onChange={handleEquipmentChange}></input>
