@@ -1,0 +1,21 @@
+#booking-page {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.equipment-container {
+  display: flex;
+  justify-content: center;
+
+  > div {
+    margin: 0 10px;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 1em;
+    align-items: center;
+  }
+
+  h4 {
+    margin: 0;
+  }
+}

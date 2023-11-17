@@ -1,17 +1,17 @@
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { courtLists } from "../stores"
 import "./CourtInfo.scss"
 import { useMemo } from "react"
 
 import JamMapMarker from "../assets/icons/jam-map-marker.svg?react"
 import JamClock from "../assets/icons/jam-clock.svg?react"
 import JamCoin from "../assets/icons/jam-coin.svg?react"
+import courtsList from "../courtsList"
 
 export default function CourtInfo() {
   let courtId = Number.parseInt(useParams().id ?? '0')
 
   let courtInfo = useMemo(() => {
-    return courtLists.find((court) => court.id === courtId)
+    return courtsList.find((court) => court.id === courtId)
   }, [courtId])
 
   let navigate = useNavigate();
