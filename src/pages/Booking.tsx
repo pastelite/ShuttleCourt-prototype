@@ -1,7 +1,8 @@
-import { useMemo, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { useParams } from "react-router-dom"
 import { equipmentsStore } from "../stores"
-import courtsList from "../courtsList"
+import courtsList, { CourtInfo } from "../courtsList"
+import dayjs from "dayjs"
 
 import "./Booking.scss"
 import JamClock from "../assets/icons/jam-clock.svg?react"
@@ -25,6 +26,8 @@ export default function Booking() {
     let { setEquipments, ...equipments } = state
     return [equipments, setEquipments]
   })
+
+  let [totalTime, setTotalTime] = useState(0)
 
   let [errorText, setErrorText] = useState('')
 
@@ -90,32 +93,11 @@ export default function Booking() {
 
   // calculate price
   let hourlyPrice = ((courtInfo?.bookingCost || 0) + formEquipments.badmintonRack * 5 + formEquipments.shuttlecock * 1)
-  let totalTime = calculateTime(startTime, endTime)
-  let price = hourlyPrice * (totalTime[0] + totalTime[1] / 60)
-  let currentTime = new Date()
-  let currentHour = currentTime.getHours()
+  let price = hourlyPrice / 60 * totalTime
 
   return <div id="booking-page">
     <h1>Booking</h1>
-    {errorText}
-    <p>
-      <h3>
-        <JamClock fill='white' height='1em' />
-        Choose your time
-        ({courtInfo?.businessHour[0]}:00 - {courtInfo?.businessHour[1]}:00)
-      </h3>
-
-      <input type="time" name="startTime" onChange={handleChangeStart}
-        defaultValue={`${currentHour.toString().padStart(2, '0')}:00`} />
-      -
-      <input type="time" name="endTime" onChange={handleChangeEnd}
-        defaultValue={`${(currentHour + 1).toString().padStart(2, '0')}:00`}
-      />
-
-      <p>
-        {totalTime[0]} hours {totalTime[1]} minutes
-      </p>
-    </p>
+    <BookingTime courtInfo={courtInfo} setTotalTime={setTotalTime} />
     <p>
       <h3>Equipment Reservation</h3>
       <div className="equipment-container">
@@ -147,4 +129,78 @@ export default function Booking() {
 function convertTimeToInt(time: string) {
   let [hour, minute] = time.split(':')
   return Number.parseInt(hour) * 100 + Number.parseInt(minute)
+}
+
+
+// By far the most complicated component in this project
+
+interface BookingTimeProps {
+  courtInfo?: CourtInfo
+  setTotalTime: React.Dispatch<React.SetStateAction<number>>
+}
+
+function BookingTime({ courtInfo, setTotalTime }: BookingTimeProps) {
+  let [errorText, setErrorText] = useState('')
+
+  let [formTime, setFormTime] = useState<{ [key: string]: string }>({
+    startTime: `${new Date().getHours().toString().padStart(2, '0')}:00`,
+    endTime: `${(new Date().getHours() + 1).toString().padStart(2, '0')}:00`
+  })
+
+  function handleTimeChange(e: React.ChangeEvent<HTMLInputElement>) {
+    let { name, value } = e.target
+    setFormTime((prev) => ({ ...prev, [name]: value }))
+    formTime[name] = value
+
+    checkTimeValue(formTime.startTime, formTime.endTime)
+  }
+
+  // check if the time is valid, if not, set error text
+  function checkTimeValue(startTimeStr: string, endTimeStr: string) {
+    // convert to dayjs object for easier comparison
+    let startTime = dayjs(startTimeStr, 'HH:mm')
+    let endTime = dayjs(endTimeStr, 'HH:mm')
+    let businessHour = courtInfo?.businessHour || [0, 0]
+    let businessHourStart = dayjs(businessHour[0].toString(), 'H')
+    let businessHourEnd = dayjs(businessHour[1].toString(), 'H')
+
+    if (startTime.isAfter(endTime)) {
+      setErrorText('End time must be after start time')
+    } else if (startTime.isBefore(businessHourStart)) {
+      setErrorText('Start time must be after openning which is ' + businessHourStart.format('HH:mm'))
+    } else if (endTime.isAfter(businessHourEnd)) {
+      setErrorText('End time must be before closing which is ' + businessHourEnd.format('HH:mm'))
+    } else {
+      setErrorText('')
+    }
+  }
+
+  // only set total time when the form changes to prevent infinite loop
+  let totalTime = useMemo(()=> {
+    let startTime = dayjs(formTime.startTime, 'HH:mm')
+    let endTime = dayjs(formTime.endTime, 'HH:mm')
+    let total = endTime.diff(startTime, 'minute')
+    setTotalTime(total)
+    return total
+  }, [formTime])
+
+  return <p>
+    <h3>
+      <JamClock fill='white' height='1em' />
+      Choose your time
+      ({courtInfo?.businessHour[0]}:00 - {courtInfo?.businessHour[1]}:00)
+    </h3>
+
+    <input type="time" name="startTime" onChange={handleTimeChange}
+      defaultValue={formTime.startTime} />
+    -
+    <input type="time" name="endTime" onChange={handleTimeChange}
+      defaultValue={formTime.endTime}
+    />
+
+    <p>
+      {Math.floor(totalTime / 60)} hours {totalTime % 60} minutes
+      <span style={{ color: 'red' }}>{errorText}</span>
+    </p>
+  </p>
 }

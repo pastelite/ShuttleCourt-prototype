@@ -8,6 +8,11 @@ import CourtInfo from './pages/CourtInfo.tsx'
 import NavBar from './components/NavBar.tsx'
 import Booking from './pages/Booking.tsx'
 
+import dayjs from "dayjs"
+import CustomParseFormat from "dayjs/plugin/customParseFormat"
+dayjs.extend(CustomParseFormat)
+
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
