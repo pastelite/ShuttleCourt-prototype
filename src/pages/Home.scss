@@ -5,6 +5,10 @@
   padding: 1em;
   position: relative;
 
+  &:hover {
+    background-color: #ffffff22;
+  }
+
   .price {
     position: absolute;
     right: 0;

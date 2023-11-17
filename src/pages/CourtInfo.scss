@@ -1,0 +1,25 @@
+@import '../global_vars.scss';
+
+#court-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.book-button {
+  background-color: $accent;
+  color: black;
+  height: 3em;
+  box-sizing: border-box;
+  border-radius: 1.5em;
+  padding: 1em 2em;
+  font-size: 1.2em;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+
+  transition: all .3s;
+
+  &:hover {
+    filter: brightness(1.2);
+  }
+}

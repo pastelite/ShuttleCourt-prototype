@@ -28,7 +28,6 @@ export default function Login() {
 
   return (
     <div>
-      <NavBar />
       <h1>Please Login to access application</h1>
       <div className='form-container'>
         <label htmlFor="username">Username</label>
