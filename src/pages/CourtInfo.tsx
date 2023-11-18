@@ -17,32 +17,41 @@ export default function CourtInfo() {
   let navigate = useNavigate();
 
   return (
-    <div id="court-page">
-      <section id="image">
+    <>
 
-      </section>
-      <section id="infobox">
-        <h1>{courtInfo?.name}</h1>
-        {/* <p>Court ID: {courtId}</p> */}
-        <p>
-          <JamMapMarker fill='white' height='1em' />
-          {courtInfo?.location}
-        </p>
-        <p>
-          <JamClock fill='white' height='1em' />
-          {courtInfo?.businessHour[0]}:00 - {courtInfo?.businessHour[1]}:00
-        </p>
-        <p>
-          <JamCoin fill='white' height='1em' />
-          {courtInfo?.bookingCost}฿
-        </p>
-        <Link to={`/court/${courtId}/book`}>
-        <button className="book-button">
-          Book Now
-        </button>
-        </Link>
-      </section>
+      <div id="img-container">
+        <img src={courtInfo?.img} alt="" id="Court-Info-img" />
+      </div>
 
-    </div>
+      <div id="court-page">
+
+        <section id="infobox">
+          <h1>{courtInfo?.name}</h1>
+
+          <p>
+            {courtInfo?.description}
+          </p>
+          <p>
+            <JamMapMarker fill='white' height='1em' />
+            {courtInfo?.location}
+          </p>
+          <p>
+            <JamClock fill='white' height='1em' />
+            {courtInfo?.businessHour[0]}:00 - {courtInfo?.businessHour[1]}:00
+          </p>
+          <p>
+            <JamCoin fill='white' height='1em' />
+            {courtInfo?.bookingCost}฿
+          </p>
+          <Link to={`/court/${courtId}/book`}>
+            <button className="book-button">
+              Book Now
+            </button>
+          </Link>
+        </section>
+
+      </div>
+    </>
+
   )
 }

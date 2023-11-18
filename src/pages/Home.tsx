@@ -19,11 +19,14 @@ function Home() {
   return (
     <>
       <h1>Choose your badminton courts</h1>
+      <div className='container'>
       {
         filteredCourts.map((court, index) => (
           <CourtItem court={court} index={index}></CourtItem>
         ))
       }
+      </div>
+
     </>
   )
 }
@@ -31,9 +34,12 @@ function Home() {
 function CourtItem(props: { court: CourtInfo, index: number }) {
   return (<Link to={`/court/${props.court.id}`}>
     <div className='court-card' key={props.index}>
+
       <h2>{props.court.name}</h2>
-      <p>{props.court.location}</p>
       <div className='price'>{props.court.bookingCost}฿</div>
+
+      <p>{props.court.location}</p>
+      <img src={props.court.img} alt="" id="img" />
     </div>
   </Link>);
 }
