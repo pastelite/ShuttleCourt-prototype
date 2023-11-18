@@ -7,7 +7,6 @@ export type CourtInfo = {
   ruleSet?: string;
 };
 
-// It is weird to store here but fuck it
 const courtLists: CourtInfo[] = [
   {id: 1, name: "Court near ICT", location: "ICT", businessHour: [9,16], bookingCost: 100, ruleSet: "Don't bring food in"},
   {id: 2, name: "Sports Science Badminton Court 1", location: "Sports Science",businessHour: [8,18],bookingCost:80},
