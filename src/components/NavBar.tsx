@@ -1,6 +1,7 @@
 import './NavBar.scss'
 import JamUserCirce from '../assets/icons/jam-user-circle.svg?react'
 import JamUnorderedList from '../assets/icons/jam-unordered-list.svg?react'
+import JamMapMarker from '../assets/icons/jam-map-marker.svg?react'
 import SVGRepoBadmintonShuttlecock from '../assets/icons/svgrepo-badminton-shuttlecock.svg?react'
 import { userStore, filterStore } from '../stores'
 import { Link, useLocation } from 'react-router-dom'
@@ -14,6 +15,10 @@ export default function NavBar() {
     setText(e.target.value)
   }
 
+  function handleCurrentLocation() {
+    setText('ICT')
+  }
+
   return <nav>
     <Link to='/home'>
     <div className="logo">
@@ -25,7 +30,8 @@ export default function NavBar() {
     {location.pathname != '/' &&
       <>
         <div className='search-bar'>
-          <input type="text" placeholder="Search for a court" onChange={handleSearchBarChange} />
+          <input type="text" placeholder="Search for a court" onChange={handleSearchBarChange} value={text} />
+          <JamMapMarker fill='white'  onClick={handleCurrentLocation} />
           {/* <button>Filter</button> */}
         </div>
         <div className='user-menu'>
