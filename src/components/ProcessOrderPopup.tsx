@@ -1,7 +1,7 @@
 import "./ProcessOrderPopup.scss";
 import JamClose from "../assets/icons/jam-close.svg?react";
 import { bookingStore, equipmentsStore } from "../stores";
-import useBookingStore from "../pages/BookingStore";
+import useBookingStore from "../pages/Booking.store";
 import { useNavigate } from "react-router-dom";
 
 export default function ProcessOrderPopup() {

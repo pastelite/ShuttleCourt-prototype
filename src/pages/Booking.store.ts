@@ -10,12 +10,14 @@ interface BookingStoreProps {
   formEquipments: StringNumberDict;
   showPopup: boolean;
   price: number;
+  error?: string;
   setCourtInfo: (courtInfo?: CourtInfo) => void;
   setTotalTime: (totalTime: number) => void;
   setDatetime: (datetime: dayjs.Dayjs) => void;
   setFormEquipments: (formEquipments: StringNumberDict) => void;
   setShowPopup: (showPopup: boolean) => void;
   setPrice: (price: number) => void;
+  setError: (error: string) => void;
 }
 
 const useBookingStore = create<BookingStoreProps>((set) => ({
@@ -28,12 +30,14 @@ const useBookingStore = create<BookingStoreProps>((set) => ({
   },
   showPopup: false,
   price: 0,
+  error: "",
   setCourtInfo: (courtInfo?) => set({ courtInfo }),
   setTotalTime: (totalTime) => set({ totalTime }),
   setDatetime: (datetime) => set({ datetime }),
   setFormEquipments: (formEquipments) => set({ formEquipments }),
   setShowPopup: (showPopup) => set({ showPopup }),
   setPrice: (price) => set({ price }),
+  setError: (error) => set({ error }),
 }))
 
 export default useBookingStore

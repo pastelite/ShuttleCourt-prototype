@@ -1,10 +1,6 @@
-import useBookingStore from "../pages/BookingStore";
+import useBookingStore from "../pages/Booking.store";
 import { equipmentsStore } from "../stores";
 
-// interface BookingEquipmentsProps {
-//   formEquipment: StringNumberDict;
-//   setFormEquipment: React.Dispatch<React.SetStateAction<StringNumberDict>>;
-// }
 export function BookingEquipments() {
   let { formEquipments, setFormEquipments } = useBookingStore();
 

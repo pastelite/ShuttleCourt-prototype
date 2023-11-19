@@ -8,11 +8,11 @@ import { BookingTime } from "../components/BookingTime"
 import "./Booking.scss"
 import JamCoin from "../assets/icons/jam-coin.svg?react"
 import ProcessOrderPopup from "../components/ProcessOrderPopup"
-import useBookingStore from "./BookingStore"
+import useBookingStore from "./Booking.store"
 
 export default function Booking() {
 
-  let { totalTime, formEquipments, setShowPopup, courtInfo, setCourtInfo, setPrice, showPopup } = useBookingStore()
+  let { totalTime, formEquipments, setShowPopup, courtInfo, setCourtInfo, setPrice, error } = useBookingStore()
 
   let courtId = Number.parseInt(useParams().id ?? '0')
 
@@ -28,6 +28,8 @@ export default function Booking() {
   let price = hourlyPrice / 60 * totalTime
 
   function handleShowPopup() {
+    if (error || error !== '') return
+    
     setShowPopup(true)
     setPrice(price)
   }
@@ -42,7 +44,7 @@ export default function Booking() {
       Final Price: {price.toFixed(2)}฿ ({hourlyPrice}฿/hr)
     </p>
     <div className="button-container">
-      <button className="book-button" onClick={handleShowPopup}>Confirm</button>
+      <button className={`book-button ${(error !== '') ? 'disabled' :'' }`} onClick={handleShowPopup}>Confirm</button>
     </div>
   </div>
 }

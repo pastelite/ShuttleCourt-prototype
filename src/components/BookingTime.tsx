@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { CourtInfo } from "../courtsList";
 import dayjs from "dayjs";
 import JamClock from "../assets/icons/jam-clock.svg?react";
-import useBookingStore from "../pages/BookingStore";
+import useBookingStore from "../pages/Booking.store";
 
 // By far the most complicated component in this project
 // interface BookingTimeProps {
@@ -10,9 +10,9 @@ import useBookingStore from "../pages/BookingStore";
 //   setTotalTime: React.Dispatch<React.SetStateAction<number>>;
 // }
 export function BookingTime() {
-  let { courtInfo, setTotalTime, datetime, setDatetime } = useBookingStore();
+  let { courtInfo, setTotalTime, datetime, setDatetime, error, setError } = useBookingStore();
 
-  let [errorText, setErrorText] = useState('');
+  // let [errorText, setError] = useState('');
 
   let [formTime, setFormTime] = useState<{ [key: string]: string; }>({
     startTime: `${new Date().getHours().toString().padStart(2, '0')}:00`,
@@ -37,13 +37,13 @@ export function BookingTime() {
     let businessHourEnd = dayjs(businessHour[1].toString(), 'H');
 
     if (startTime.isAfter(endTime)) {
-      setErrorText('End time must be after start time');
+      setError('End time must be after start time');
     } else if (startTime.isBefore(businessHourStart)) {
-      setErrorText('Start time must be after openning which is ' + businessHourStart.format('HH:mm'));
+      setError('Start time must be after openning which is ' + businessHourStart.format('HH:mm'));
     } else if (endTime.isAfter(businessHourEnd)) {
-      setErrorText('End time must be before closing which is ' + businessHourEnd.format('HH:mm'));
+      setError('End time must be before closing which is ' + businessHourEnd.format('HH:mm'));
     } else {
-      setErrorText('');
+      setError('');
     }
   }
   // Run once to check if the default time is valid
@@ -84,7 +84,7 @@ export function BookingTime() {
     <input type="date" defaultValue={dayjs().format('YYYY-MM-DD') } onChange={handleDateChange}></input>
 
     <p>
-      {Math.floor(totalTime / 60)} hours {totalTime % 60} minutes <span style={{ color: 'red' }}>{errorText}</span>
+      {Math.floor(totalTime / 60)} hours {totalTime % 60} minutes <span style={{ color: 'red' }}>{error}</span>
     </p>
   </p>;
 }
