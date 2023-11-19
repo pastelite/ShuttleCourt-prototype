@@ -26,7 +26,7 @@ export default function NavBar() {
       <>
         <div className='search-bar'>
           <input type="text" placeholder="Search for a court" onChange={handleSearchBarChange} />
-          <button>Filter</button>
+          {/* <button>Filter</button> */}
         </div>
         <div className='user-menu'>
           <JamUserCirce fill='white' />
